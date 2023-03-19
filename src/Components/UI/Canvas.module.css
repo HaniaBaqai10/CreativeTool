@@ -1,0 +1,14 @@
+
+.canvas-container {
+    position: relative;
+    width: 500px;
+    height: 500px; 
+    background-color: white;
+    top: 90%; 
+    left: 40%;
+  }
+  .center-canvas{
+    position: absolute;
+    top: 20%;
+    left: 40%;
+  }

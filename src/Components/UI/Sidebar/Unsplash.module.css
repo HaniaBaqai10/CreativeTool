@@ -1,0 +1,28 @@
+.images {
+    display: flex;
+    flex-wrap: wrap;
+   
+  }
+  
+  .images-row {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .images-container {
+    margin: 10px;
+    flex: 1 1 200px; 
+    
+  }
+  
+  .images-container img {
+    width: 150px;
+    height: 150px; 
+    margin: 8px;
+    
+  }
+  p{
+    color: white;
+    font-size: medium;
+  }

@@ -1,0 +1,28 @@
+.buttonContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 20px;
+  }
+  
+.button{
+    background-color: rgb(65, 63, 63);
+    color: white;
+    border: none;
+    outline: none;
+    width: 85%;
+    height: 50px;
+    margin: 10px 20px;
+    padding: 5px;
+}
+  .heading{
+    font-size: xx-large;
+    font-weight: bold;
+  }
+  .subheading{
+    font-size: large;
+    font-weight: 200;
+  }
+  .text{
+    font-size: small;
+  }
