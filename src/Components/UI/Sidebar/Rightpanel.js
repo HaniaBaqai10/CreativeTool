@@ -7,11 +7,11 @@ const RightPanel = () => {
 
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
+  const [width, setWidth] = useState('0');
+  const [height, setHeight] = useState("0");
   const [color, setColor] = useState("#808080");
   const [strokeColor, setStrokeColor] = useState("#808080");
-  const [strokeWidth, setStrokeWidth] = useState(1);
+  const [strokeWidth, setStrokeWidth] = useState(0.1);
   const [angle, setAngle] = useState(1);
 
   useEffect(() => {
@@ -60,7 +60,7 @@ const RightPanel = () => {
   };
 const handleSelectedObject = (event) => {
     const activeObject = event.target;
-    
+  
     if (activeObject) {
         canvasState.renderAll();
       setX(activeObject.left);
@@ -123,26 +123,29 @@ const handleSelectedObject = (event) => {
 
   const handleInputHeight = (value) => {
     const newHeight = parseInt(value);
-    setHeight(newHeight);
     const activeObject = canvasState.getActiveObject();
-    activeObject.scaleToHeight(newHeight);
+    const scaling = newHeight / activeObject.height;
+    activeObject.scaleY = scaling;
     canvasState.renderAll();
+    setHeight(newHeight)
   };
-
+  
   const handleInputWidth = (value) => {
     const newWidth = parseInt(value);
-    setWidth(newWidth);
     const activeObject = canvasState.getActiveObject();
-    activeObject.scaleToWidth(newWidth);
+    const scaling = newWidth / activeObject.width;
+    activeObject.scaleX = scaling;
     canvasState.renderAll();
+    setWidth(newWidth)
   };
+  
 
   const handleColor = (value) => {
-    // console.log(value);
+ 
     const activeObject = canvasState.getActiveObject();
     console.log(canvasState.getActiveObject());
     activeObject.set("fill", value);
-    // console.log(activeObject)
+
     canvasState.renderAll();
     setColor(value);
   };
@@ -254,6 +257,7 @@ const handleSelectedObject = (event) => {
             <input
               id="strokeWidth"
               type="number"
+              min='0'
               value={strokeWidth}
               onChange={(e) => {
                 handleStrokeWidth(e.target.value);

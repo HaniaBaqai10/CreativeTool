@@ -38,6 +38,7 @@ const CanvasComponent = () => {
             dispatch(uiActions.toggleOptions({ optionsIsVisible: true }));
         } 
        
+       
       });
     canvas.on('selection:cleared', () => {
         const activeObject = canvas.getActiveObject();
