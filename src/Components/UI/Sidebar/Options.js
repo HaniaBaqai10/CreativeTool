@@ -39,6 +39,13 @@ const Options=()=>{
           canvasState.renderAll();
         }
       }
+      const handleDeleteObject=()=>{
+        const activeObject = canvasState.getActiveObject();
+        if(activeObject){
+            canvasState.remove(activeObject)
+            canvasState.renderAll();
+        }
+      }
 
     return(
         <>
@@ -64,7 +71,7 @@ const Options=()=>{
     </div>
   </div> 
   <button >Bold</button>
-  <button >Italic</button>
+  <button onClick={handleDeleteObject}>Delete</button>
   
   <div className={classes.suboptions}>
     <button >Position

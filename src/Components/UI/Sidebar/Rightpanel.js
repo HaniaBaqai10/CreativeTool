@@ -11,7 +11,7 @@ const RightPanel = () => {
   const [height, setHeight] = useState("0");
   const [color, setColor] = useState("#808080");
   const [strokeColor, setStrokeColor] = useState("#808080");
-  const [strokeWidth, setStrokeWidth] = useState(0.1);
+  const [strokeWidth, setStrokeWidth] = useState("0.1");
   const [angle, setAngle] = useState(1);
 
   useEffect(() => {
@@ -150,12 +150,14 @@ const handleSelectedObject = (event) => {
     setColor(value);
   };
   const handleStrokeWidth = (value) => {
+    const newWidth=parseInt(value)
     const activeObject = canvasState.getActiveObject();
-    activeObject.set("strokeWidth", value);
+    activeObject.set("strokeWidth", newWidth);
     canvasState.renderAll();
     setStrokeWidth(value);
   };
   const handleStrokeColor = (value) => {
+   
     const activeObject = canvasState.getActiveObject();
     activeObject.set("stroke", value);
     canvasState.renderAll();
@@ -258,6 +260,7 @@ const handleSelectedObject = (event) => {
               id="strokeWidth"
               type="number"
               min='0'
+              step="0.1"
               value={strokeWidth}
               onChange={(e) => {
                 handleStrokeWidth(e.target.value);
