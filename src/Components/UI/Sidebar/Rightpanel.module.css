@@ -1,34 +1,62 @@
 .rightPanel{
-    background-color:  rgb(54, 53, 53);
-    color: white;
-    width: 250px;
-    height: 90vh;
-    position: absolute;
-    left: 81%;
-    
-    top:15%
+  width: 18%;
+  overflow: auto;
+  height: 80vh;
+  border-radius: 20px;
+  background-color: rgb(54, 53, 53);
+  position: absolute;
+  left: 81%;
+  top: 16%;
+  
+  color: white;
+  padding: 10px;
+}
+.btn{
+background-color:rgb(54, 53, 53) ;
+cursor: pointer;
+color: white;
+font-size: 12px;
+border-radius: 20px;
+text-decoration: none;
+    border: none;
+    padding-left: 4%;
+}
+.btn:hover{
+  background-color:rgb(75, 73, 73) ;
 }
 .heading{
-    font-size: 20px;
+    /* font-size: 15px; */
     font-weight: bold;
-    margin-left: 40px;
-    padding-left: 50px;
+    align-items: center;
+    margin-left: 35%;
+    padding-bottom: 20px;
+}
+.Alignment{
+  padding-bottom: 5px;
+  font-size: 15px;
 }
 .input {
     display: flex;
     flex-direction: row;
+
   margin-left: 20px;
-  
-  padding: 20px;
+ 
+  padding: 10px;
   padding-top: 2px;
    
   }
-  
+  .color{
+    margin-left: 20%;
+  }
   .input label {
-    margin-right: 5px;
+    
+    font-size: 12px;
+
   }
   
   .input input {
     margin: 10px;
+    
     width: 60px;
+    cursor: pointer;
   }

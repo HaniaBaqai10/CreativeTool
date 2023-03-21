@@ -1,24 +1,61 @@
-import classes from './Navbar.module.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUpload,faUndo,faRedo, faCloudUpload,faAngleLeft } from '@fortawesome/free-solid-svg-icons'
+import classes from "./Navbar.module.css";
+import { useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUpload } from "@fortawesome/free-solid-svg-icons";
 const Navbar = () => {
-  
+  const canvasState = useSelector((state) => state.ui.canvas);
+  const handleExport=(type)=>{
+    switch(type){
+      case 'png':{
+        var dataURL = canvasState.toDataURL({
+          format: 'png',
+          quality: 0.8
+        });
+        const link = document.createElement('a');
+        link.href = dataURL;
+      link.download = 'canvas.png';
+     
+      link.click();
+      break;
+      }
+      case 'svg':{
+        var svg = canvasState.toSVG();
+        let url="data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+        const link = document.createElement('a');
+        link.href = url;
+      link.download = 'canvas.svg';
+     
+      link.click();
+      break
+      }
+      default:{
+        break;
+      }
+    }
+  }
+
+
   return (
-    
-      <div className={classes.navbar}>
-        <div className={classes.items}>
-          
-            <a className={classes.item} href="http://localhost:3000/"><FontAwesomeIcon icon={faAngleLeft} height="1.3em"/></a>
-            <a className={classes.item} href="http://localhost:3000/">Home</a>
-            <a  className={classes.item} href="http://localhost:3000/">File</a>
-            <a className={classes.item} href="http://localhost:3000/">Resize</a>
-            <a className={classes.item} href="http://localhost:3000/" ><FontAwesomeIcon icon={faUndo} height="1.3em"/></a>
-            <a className={classes.item} href="http://localhost:3000/"><FontAwesomeIcon icon={faRedo} height="1.3em"/></a>
-            <a className={classes.item} href="http://localhost:3000/"><FontAwesomeIcon icon={faCloudUpload} height="1.3em"/></a>
-        </div>
-        <button className={classes.button}><FontAwesomeIcon icon={faUpload} height="1.3em"/><span style={{paddingLeft: '10px'}}>Share</span></button>
+    <div className={classes.navbar}>
+      <div className={classes.items}>
+        <a className={classes.item} href="http://localhost:3000/">
+          Home
+        </a>
       </div>
-    
+      <div className={classes.dropdown}>
+     
+      <button className={classes.button} >
+        <FontAwesomeIcon icon={faUpload} height="1.3em" />
+        <span style={{ paddingLeft: "10px" }}>Export</span>
+       
+      </button>
+      <div className={classes['dropdown-content']} >
+{        <button onClick={()=>{handleExport('png')}} >PNG</button>
+
+}      <button onClick={()=>{handleExport('svg')}} >SVG</button>
+      </div>
+    </div>
+    </div>
   );
 };
 export default Navbar;

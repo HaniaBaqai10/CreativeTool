@@ -4,10 +4,52 @@ import { fabric } from "fabric";
 import { useState, useEffect } from "react";
 const RightPanel = () => {
   const canvasState = useSelector((state) => state.ui.canvas);
-
+  function handleAlignments(value) {
+    const activeObject = canvasState.getActiveObject();
+    if(activeObject){
+    switch (value) {
+      case "left": {
+        activeObject.set("left", 0);
+        canvasState.renderAll();
+        break;
+      }
+      case "right": {
+        activeObject.set('left',canvasState.width-activeObject.getScaledWidth());
+        canvasState.renderAll();
+        break;
+      }
+      case "top": {
+        activeObject.set('top', 0);
+        canvasState.renderAll();
+        break;
+      }
+      case "bottom": {
+        activeObject.set('top',canvasState.width-activeObject.getScaledHeight() );
+        canvasState.renderAll();
+        break;
+      }
+      case "center": {
+        activeObject.set('left', ((canvasState.width/2)-(activeObject.getScaledWidth())/2) );
+        activeObject.set('top', ((canvasState.height/2)-(activeObject.getScaledHeight())/2) );
+        canvasState.renderAll();
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+  }
+  const Alignment = [
+    { id: "left", name: "Left" },
+    { id: "right", name: "Right" },
+    { id: "center", name: "Center" },
+    { id: "top", name: "Top" },
+    { id: "bottom", name: "Bottom" },
+  ];
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
-  const [width, setWidth] = useState('0');
+  const [width, setWidth] = useState("0");
   const [height, setHeight] = useState("0");
   const [color, setColor] = useState("#808080");
   const [strokeColor, setStrokeColor] = useState("#808080");
@@ -16,16 +58,24 @@ const RightPanel = () => {
 
   useEffect(() => {
     const activeObject = canvasState.getActiveObject();
-    console.log(canvasState)
+    console.log(canvasState);
     if (activeObject) {
-     setX(activeObject.left)
-     setY(activeObject.top)
-     const newHeight = activeObject.height * activeObject.scaleY;
-     const newWidth = activeObject.width * activeObject.scaleX;
-     console.log(newHeight)
-     setHeight(newHeight);
-     setWidth(newWidth);
-    
+      setX(activeObject.left);
+      setY(activeObject.top);
+      const newHeight = activeObject.height * activeObject.scaleY;
+      const newWidth = activeObject.width * activeObject.scaleX;
+      console.log(newHeight);
+      setHeight(newHeight);
+      setWidth(newWidth);
+      document.onkeydown=function(event){
+        const key = event.key;
+        if (key=== "Delete") {
+        if(activeObject){
+            canvasState.remove(activeObject)
+            canvasState.renderAll();
+        }
+      }
+      }
     }
 
     canvasState.on("object:selected", handleSelectedObject);
@@ -39,42 +89,50 @@ const RightPanel = () => {
     canvasState.on("object:scaling", handleObjectSize);
     canvasState.on("object:rotating", handleObjectRotation);
     return () => {
-    canvasState.off("object:selected", handleSelectedObject);
-    canvasState.off("selection:created", handleSelectedObject);
-    canvasState.off("before:transform", handleSelectedObject);
-    canvasState.off("selection:updated", handleSelectedObject);
-    canvasState.off("mouse:dblclick", handleSelectedObject);
-    canvasState.off("mouse:up", handleSelectedObject);
-    canvasState.off("after:render", handleSelectedObject);
-    canvasState.off("object:scaling", handleObjectSize);
-    
+      canvasState.off("object:selected", handleSelectedObject);
+      canvasState.off("selection:created", handleSelectedObject);
+      canvasState.off("before:transform", handleSelectedObject);
+      canvasState.off("selection:updated", handleSelectedObject);
+      canvasState.off("mouse:dblclick", handleSelectedObject);
+      canvasState.off("mouse:up", handleSelectedObject);
+      canvasState.off("after:render", handleSelectedObject);
+      canvasState.off("object:scaling", handleObjectSize);
+
       canvasState.off("object:moving", handleSelectedObject);
-      
+
       canvasState.off("object:rotating", handleObjectRotation);
     };
   }, []);
-
+ 
   const handleObjectRotation = (event) => {
     const activeObject = event.target;
     updateAngle(activeObject);
   };
-const handleSelectedObject = (event) => {
+ 
+  const handleSelectedObject = (event) => {
     const activeObject = event.target;
-  
+  if(activeObject){
+    document.onkeydown=function(event){
+      const key = event.key;
+      if (key=== "Delete" ) {
+          canvasState.remove(activeObject)
+          canvasState.renderAll();
+    }
+    }
+  }
     if (activeObject) {
-        canvasState.renderAll();
+      canvasState.renderAll();
       setX(activeObject.left);
       setY(activeObject.top);
       const newHeight = activeObject.height * activeObject.scaleY;
       const newWidth = activeObject.width * activeObject.scaleX;
-      setColor(activeObject.fill)
-      setStrokeColor(activeObject.stroke)
-      setStrokeWidth(activeObject.strokeWidth)
+      setColor(activeObject.fill);
+      setStrokeColor(activeObject.stroke);
+      setStrokeWidth(activeObject.strokeWidth);
       setHeight(newHeight);
       setWidth(newWidth);
       setAngle(activeObject.angle);
     }
-   
   };
   const updateAngle = (object) => {
     if (object) {
@@ -82,7 +140,6 @@ const handleSelectedObject = (event) => {
       setX(object.left);
       setY(object.top);
     }
-  
   };
   const handleRotation = (value) => {
     const activeObject = canvasState.getActiveObject();
@@ -91,7 +148,7 @@ const handleSelectedObject = (event) => {
     canvasState.renderAll();
     setAngle(value);
     setX(activeObject.left);
-      setY(activeObject.top);
+    setY(activeObject.top);
   };
   const handleInputX = (value) => {
     const activeObject = canvasState.getActiveObject();
@@ -99,7 +156,6 @@ const handleSelectedObject = (event) => {
     activeObject.left = parseInt(value);
     canvasState.renderAll();
     setX(activeObject.left);
-   
   };
   const handleInputY = (value) => {
     const activeObject = canvasState.getActiveObject();
@@ -120,28 +176,25 @@ const handleSelectedObject = (event) => {
     }
   };
 
-
   const handleInputHeight = (value) => {
     const newHeight = parseInt(value);
     const activeObject = canvasState.getActiveObject();
     const scaling = newHeight / activeObject.height;
     activeObject.scaleY = scaling;
     canvasState.renderAll();
-    setHeight(newHeight)
+    setHeight(newHeight);
   };
-  
+
   const handleInputWidth = (value) => {
     const newWidth = parseInt(value);
     const activeObject = canvasState.getActiveObject();
     const scaling = newWidth / activeObject.width;
     activeObject.scaleX = scaling;
     canvasState.renderAll();
-    setWidth(newWidth)
+    setWidth(newWidth);
   };
-  
 
   const handleColor = (value) => {
- 
     const activeObject = canvasState.getActiveObject();
     console.log(canvasState.getActiveObject());
     activeObject.set("fill", value);
@@ -150,14 +203,13 @@ const handleSelectedObject = (event) => {
     setColor(value);
   };
   const handleStrokeWidth = (value) => {
-    const newWidth=parseInt(value)
+    const newWidth = parseInt(value);
     const activeObject = canvasState.getActiveObject();
     activeObject.set("strokeWidth", newWidth);
     canvasState.renderAll();
     setStrokeWidth(value);
   };
   const handleStrokeColor = (value) => {
-   
     const activeObject = canvasState.getActiveObject();
     activeObject.set("stroke", value);
     canvasState.renderAll();
@@ -183,6 +235,7 @@ const handleSelectedObject = (event) => {
               }}
             />
           </div>
+
           <div>
             <label htmlFor="yaxis">Y</label>
             <input
@@ -195,7 +248,17 @@ const handleSelectedObject = (event) => {
             />
           </div>
         </div>
+        <label className={classes.heading}>
+          Alignment
+        </label>
 
+        <div className={classes.Alignment}>
+          {Alignment.map((item) => (
+            <button className={classes.btn} id={item.id} onClick={()=>handleAlignments(item.id)}>
+              {item.name}
+            </button>
+          ))}
+        </div>
         <label className={classes.heading} htmlFor="Size">
           Size
         </label>
@@ -224,10 +287,12 @@ const handleSelectedObject = (event) => {
             />
           </div>
         </div>
-         <div className={classes.input}>
-          <div>
-            <label htmlFor="color">Color</label>
+        <label className={classes.heading} htmlFor="color">Color</label>
+        <div className={classes.input}>
+          <div  className={classes.color}>
+           
             <input
+           
               id="color"
               type="color"
               value={color}
@@ -238,7 +303,7 @@ const handleSelectedObject = (event) => {
           </div>
         </div>
 
-       <label className={classes.heading} htmlFor="Stroke">
+        <label className={classes.heading} htmlFor="Stroke">
           Stroke
         </label>
 
@@ -259,7 +324,7 @@ const handleSelectedObject = (event) => {
             <input
               id="strokeWidth"
               type="number"
-              min='0'
+              min="0"
               step="0.1"
               value={strokeWidth}
               onChange={(e) => {
@@ -268,9 +333,10 @@ const handleSelectedObject = (event) => {
             />
           </div>
         </div>
+        <label className={classes.heading} htmlFor="rotate">Rotate</label>
+
         <div className={classes.input}>
-          <div>
-            <label htmlFor="rotate">Rotate</label>
+          <div className={classes.color}>
             <input
               id="rotate"
               type="number"
@@ -280,7 +346,7 @@ const handleSelectedObject = (event) => {
               }}
             />
           </div>
-        </div> 
+        </div>
       </div>
     </>
   );

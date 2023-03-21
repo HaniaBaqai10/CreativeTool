@@ -5,7 +5,7 @@ import { fabric } from 'fabric'
 import { useSelector } from "react-redux";
 const Elements = () => {
   const canvas = useSelector((state) =>  state.ui.canvas)
-  const elementslist=['Arrow','Line','Circle','Heart','Gradient','Square','Shadow'];
+  // const elementslist=['Arrow','Line','Circle','Heart','Gradient','Square','Shadow'];
   const shapes=[
   {
     id:'square',
@@ -60,14 +60,15 @@ const addShapes=(source)=>{
   return (
     <div>   
       <Searchbar/>
+      {/* <div className={classes['container']}>
          <div className={classes['scroll-container']}>
       <div className={classes['scroll-items']}>
         {elementslist.map((item)=>(
               <div  className={classes['scroll-items']}>{item}</div>
         ))}
         </div>
-        
         </div>
+        </div> */}
         <div className={classes.shapes}>           
            <div className={classes['shape-row']}>
             <div className={classes['shape-container']}>

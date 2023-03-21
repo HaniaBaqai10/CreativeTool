@@ -4,11 +4,11 @@
     width: 500px;
     height: 500px; 
     background-color: white;
-    top: 90%; 
+    top: 100%; 
     left: 40%;
   }
   .center-canvas{
     position: absolute;
-    top: 20%;
+    top: 50%;
     left: 40%;
   }

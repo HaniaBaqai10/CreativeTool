@@ -7,7 +7,7 @@ import classes from './Sidepanel.module.css'
 import Texts from './Texts';
 import Splash from './Unsplash';
 const Sidepanel = (props) => {
-  const [visibleComponent, setVisibleComponent] = useState(null);
+  const [visibleComponent, setVisibleComponent] = useState('sideBarId-text');
   const isAtBottom=props.isAtBottom
   //function passed as a prop to the child
   const handleVisibilityChange = (id) => {
@@ -17,6 +17,7 @@ const Sidepanel = (props) => {
       <div className={classes.wrapper}>
        <Sidebar onVisibilityChange={handleVisibilityChange} />
       <Leftpanel  >
+
         {visibleComponent === 'sideBarId-text' && <Texts />}
         {visibleComponent === 'sideBarId-elements' && <Elements />}
         {visibleComponent === 'sideBarId-unsplash' && <Splash isAtBottom={isAtBottom}/>}

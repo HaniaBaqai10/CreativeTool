@@ -58,7 +58,6 @@ const Texts = () => {
  
   return (
     <>
-      <Searchbar />
       <div className={classes.buttonContainer}>
         {['Heading', 'SubHeading', 'text'].map((type) => (
           <button

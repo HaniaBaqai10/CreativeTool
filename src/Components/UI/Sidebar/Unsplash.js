@@ -33,7 +33,7 @@ const addImage = (url) => {
   fabric.Image.fromURL(url, function (image) {
     canvas.add(image);
    
-  });
+  },{crossOrigin: "Anonymous"});
 };
 
 useEffect(() => {
@@ -54,7 +54,7 @@ useEffect(() => {
     <div className={classes["images-row"]}>
       <div  className={classes["images-container"]}>
         {imageList.map((url, index) => (
-          <img onClick={()=>addImage(url)}src={url} key={index} alt="unsplashImage" />
+          <img  onClick={()=>addImage(url)}src={url} key={index} alt="unsplashImage" />
         ))}
       </div>
     </div>

@@ -7,7 +7,7 @@
     border-radius: 4px;
     padding: 9px;
     /* margin-right: 2px; */
-    margin-left: 10px;
+    margin-left: 10%;
     height: 50px;
   }
   .search-container input[type="text"] {
@@ -18,7 +18,14 @@
     border-radius: 4px;
     font-size: 14px;
   }
-  
+  .searchbtn{
+    position: absolute;
+    position: absolute;
+    top: 06%;
+    left: 70%;
+    color: black;
+    
+  }
 
   .search {
     background-color: transparent;

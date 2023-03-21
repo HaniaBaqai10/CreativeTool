@@ -25,11 +25,10 @@
     justify-content: center;
   }
  
-
   .item:hover,
   .item:active{
     cursor: pointer;
-    background-color: rgb(54, 53, 53);
+    background-color:rgb(54, 53, 53);
   }
   .item p{
     margin: 2px;

@@ -4,7 +4,9 @@
     align-items: flex-start;
     margin-top: 20px;
   }
-  
+.button:hover{
+  background-color: rgb(71, 69, 69);
+}
 .button{
     background-color: rgb(65, 63, 63);
     color: white;
@@ -14,6 +16,7 @@
     height: 50px;
     margin: 10px 20px;
     padding: 5px;
+    cursor: pointer;
 }
   .heading{
     font-size: xx-large;
