@@ -11,19 +11,18 @@
   
   .item{
     background-color: rgb(37, 36, 36);
-
     color: rgb(240, 236, 236);
     text-decoration: none;
     border: none;
     font-size: 16px;
-    margin: 2px 0;
+    margin: 5px -55px;
     height: 60px;
     width: 100px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-  }
+}
  
   .item:hover,
   .item:active{

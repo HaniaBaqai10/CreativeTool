@@ -6,7 +6,8 @@ import { faThLarge, faTextWidth, faImage } from "@fortawesome/free-solid-svg-ico
 
 
 const Sidebar = ({ onVisibilityChange }) => {
-  const [activeId, setActiveId] = useState(""); 
+  const [activeId, setActiveId] = useState("random"); 
+  
 
   const StateHandler = (id) => {
     setActiveId(id); 

@@ -1,13 +1,14 @@
 .images {
     display: flex;
     flex-wrap: wrap;
-    padding: 5%;
+    padding: 0% 5%;
   }
   
   .images-row {
     display: flex;
     justify-content: center;
     width: 100%;
+    margin: 0px 5px;
   }
   
   .images-container {

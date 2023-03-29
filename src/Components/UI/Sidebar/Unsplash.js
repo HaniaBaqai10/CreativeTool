@@ -12,22 +12,44 @@ const Splash = (props) => {
   const [imageList, setImageList] = useState([]);
   const [page,setPage]=useState(1)
   const isAtBottom=props.isAtBottom
- 
+  const [userinput,setuserInput]=useState('')
   const [loading,setLoading]=useState(true)
+const handleInput=(userinput)=>{
+setuserInput(userinput)
+setPage(1); 
+setImageList([]);
+console.log(userinput)
+}
 
 useEffect(() => {
   setLoading(true);
-  fetch(
-    `https://api.unsplash.com/photos/?page=${page}&client_id=eVGMjRH6CvD-A0PfeLxDSCZgc6D35jze83T_UK1407A`
-  )
+  let url
+  if (userinput === "") {
+    
+    url = `https://api.unsplash.com/photos/?page=${page}&client_id=eVGMjRH6CvD-A0PfeLxDSCZgc6D35jze83T_UK1407A`;
+    fetch(url)
     .then((response) => response.json())
     .then((data) => {
-      const urls = data.map((item) => item.urls.small);
+      const urls = data.map((item) => item.urls.regular);
       setImageList((prevState) => [...prevState, ...urls]);
       setLoading(false);
     })
     .catch((error) => console.log(error));
-}, [page]);
+  } 
+  else {
+    url = `https://api.unsplash.com/search/photos?page=${page}&query=${userinput}&client_id=eVGMjRH6CvD-A0PfeLxDSCZgc6D35jze83T_UK1407A`;
+  
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      const urls = data.results.map((item) => item.urls.regular);
+      setImageList((prevState) => [...prevState, ...urls]);
+      setLoading(false);
+    })
+    .catch((error) => console.log(error));
+  }
+}, [page,userinput]);
+
 
 const addImage = (url) => {
   fabric.Image.fromURL(url, function (image) {
@@ -48,8 +70,10 @@ useEffect(() => {
 
   return (
     <div>
-      <Searchbar />
-     <div className={classes.images}>
+      <Searchbar onInputsend={handleInput}/>
+  {imageList.length === 0 ? (
+  <p>No results found.</p>
+) : (   <div className={classes.images}>
    
     <div className={classes["images-row"]}>
       <div  className={classes["images-container"]}>
@@ -62,7 +86,7 @@ useEffect(() => {
     <p>Loading...</p>
   ) :<></>
 }
-</div>
+</div>)}
 
     </div>
   );

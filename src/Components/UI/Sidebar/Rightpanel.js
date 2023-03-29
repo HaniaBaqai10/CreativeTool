@@ -6,39 +6,51 @@ const RightPanel = () => {
   const canvasState = useSelector((state) => state.ui.canvas);
   function handleAlignments(value) {
     const activeObject = canvasState.getActiveObject();
-    if(activeObject){
-    switch (value) {
-      case "left": {
-        activeObject.set("left", 0);
-        canvasState.renderAll();
-        break;
-      }
-      case "right": {
-        activeObject.set('left',canvasState.width-activeObject.getScaledWidth());
-        canvasState.renderAll();
-        break;
-      }
-      case "top": {
-        activeObject.set('top', 0);
-        canvasState.renderAll();
-        break;
-      }
-      case "bottom": {
-        activeObject.set('top',canvasState.width-activeObject.getScaledHeight() );
-        canvasState.renderAll();
-        break;
-      }
-      case "center": {
-        activeObject.set('left', ((canvasState.width/2)-(activeObject.getScaledWidth())/2) );
-        activeObject.set('top', ((canvasState.height/2)-(activeObject.getScaledHeight())/2) );
-        canvasState.renderAll();
-        break;
-      }
-      default: {
-        break;
+    if (activeObject) {
+      switch (value) {
+        case "left": {
+          activeObject.set("left", 0);
+          canvasState.renderAll();
+          break;
+        }
+        case "right": {
+          activeObject.set(
+            "left",
+            canvasState.width - activeObject.getScaledWidth()
+          );
+          canvasState.renderAll();
+          break;
+        }
+        case "top": {
+          activeObject.set("top", 0);
+          canvasState.renderAll();
+          break;
+        }
+        case "bottom": {
+          activeObject.set(
+            "top",
+            canvasState.width - activeObject.getScaledHeight()
+          );
+          canvasState.renderAll();
+          break;
+        }
+        case "center": {
+          activeObject.set(
+            "left",
+            canvasState.width / 2 - activeObject.getScaledWidth() / 2
+          );
+          activeObject.set(
+            "top",
+            canvasState.height / 2 - activeObject.getScaledHeight() / 2
+          );
+          canvasState.renderAll();
+          break;
+        }
+        default: {
+          break;
+        }
       }
     }
-  }
   }
   const Alignment = [
     { id: "left", name: "Left" },
@@ -46,6 +58,16 @@ const RightPanel = () => {
     { id: "center", name: "Center" },
     { id: "top", name: "Top" },
     { id: "bottom", name: "Bottom" },
+  ];
+  var fonts = [
+    {id:"f0",name:"Times New Roman"},
+    {id:"f1", name:"Inconsolata"},
+   {id:"f2", name:"Pacifico"},
+    {id:"f3",name:"Quicksand"},
+    {id:"f4",name:"Roboto"},
+    {id:"f5",name:"Rancho"},
+    {id:"f6",name:"Tangerine"},
+    {id:"f7",name:"VT323"},
   ];
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
@@ -55,27 +77,29 @@ const RightPanel = () => {
   const [strokeColor, setStrokeColor] = useState("#808080");
   const [strokeWidth, setStrokeWidth] = useState("0.1");
   const [angle, setAngle] = useState(1);
+  const [fontsOptions, setFontsOptions] = useState('Times New Roman');
 
   useEffect(() => {
     const activeObject = canvasState.getActiveObject();
-    console.log(canvasState);
+    // console.log(canvasState);
     if (activeObject) {
       setX(activeObject.left);
       setY(activeObject.top);
+      setFontsOptions(activeObject.fontFamily)
       const newHeight = activeObject.height * activeObject.scaleY;
       const newWidth = activeObject.width * activeObject.scaleX;
-      console.log(newHeight);
+      
       setHeight(newHeight);
       setWidth(newWidth);
-      document.onkeydown=function(event){
+      document.onkeydown = function (event) {
         const key = event.key;
-        if (key=== "Delete") {
-        if(activeObject){
-            canvasState.remove(activeObject)
+        if (key === "Delete") {
+          if (activeObject) {
+            canvasState.remove(activeObject);
             canvasState.renderAll();
+          }
         }
-      }
-      }
+      };
     }
 
     canvasState.on("object:selected", handleSelectedObject);
@@ -84,7 +108,6 @@ const RightPanel = () => {
     canvasState.on("before:transform", handleSelectedObject);
     canvasState.on("mouse:dblclick", handleSelectedObject);
     canvasState.on("mouse:up", handleSelectedObject);
-    canvasState.on("after:render", handleSelectedObject);
     canvasState.on("object:moving", handleSelectedObject);
     canvasState.on("object:scaling", handleObjectSize);
     canvasState.on("object:rotating", handleObjectRotation);
@@ -95,7 +118,6 @@ const RightPanel = () => {
       canvasState.off("selection:updated", handleSelectedObject);
       canvasState.off("mouse:dblclick", handleSelectedObject);
       canvasState.off("mouse:up", handleSelectedObject);
-      canvasState.off("after:render", handleSelectedObject);
       canvasState.off("object:scaling", handleObjectSize);
 
       canvasState.off("object:moving", handleSelectedObject);
@@ -103,23 +125,33 @@ const RightPanel = () => {
       canvasState.off("object:rotating", handleObjectRotation);
     };
   }, []);
- 
+
+  const handleFonts=(e)=>{
+  
+      canvasState.getActiveObject().set("fontFamily",e);
+    canvasState.renderAll()
+    setFontsOptions(e)
+    }
+  
   const handleObjectRotation = (event) => {
     const activeObject = event.target;
     updateAngle(activeObject);
   };
- 
+
   const handleSelectedObject = (event) => {
+   
     const activeObject = event.target;
-  if(activeObject){
-    document.onkeydown=function(event){
-      const key = event.key;
-      if (key=== "Delete" ) {
-          canvasState.remove(activeObject)
+    if (activeObject) {
+      document.onkeydown = function (event) {
+        const key = event.key;
+        if (key === "Delete") {
+          canvasState.remove(activeObject);
           canvasState.renderAll();
+        }
+      };
     }
-    }
-  }
+
+  
     if (activeObject) {
       canvasState.renderAll();
       setX(activeObject.left);
@@ -130,6 +162,7 @@ const RightPanel = () => {
       setStrokeColor(activeObject.stroke);
       setStrokeWidth(activeObject.strokeWidth);
       setHeight(newHeight);
+      setFontsOptions(fontsOptions)
       setWidth(newWidth);
       setAngle(activeObject.angle);
     }
@@ -248,13 +281,15 @@ const RightPanel = () => {
             />
           </div>
         </div>
-        <label className={classes.heading}>
-          Alignment
-        </label>
+        <label className={classes.heading}>Alignment</label>
 
         <div className={classes.Alignment}>
           {Alignment.map((item) => (
-            <button className={classes.btn} id={item.id} onClick={()=>handleAlignments(item.id)}>
+            <button
+              className={classes.btn}
+              id={item.id}
+              onClick={() => handleAlignments(item.id)}
+            >
               {item.name}
             </button>
           ))}
@@ -287,12 +322,12 @@ const RightPanel = () => {
             />
           </div>
         </div>
-        <label className={classes.heading} htmlFor="color">Color</label>
+        <label className={classes.heading} htmlFor="color">
+          Color
+        </label>
         <div className={classes.input}>
-          <div  className={classes.color}>
-           
+          <div className={classes.color}>
             <input
-           
               id="color"
               type="color"
               value={color}
@@ -333,7 +368,9 @@ const RightPanel = () => {
             />
           </div>
         </div>
-        <label className={classes.heading} htmlFor="rotate">Rotate</label>
+        <label className={classes.heading} htmlFor="rotate">
+          Rotate
+        </label>
 
         <div className={classes.input}>
           <div className={classes.color}>
@@ -347,6 +384,11 @@ const RightPanel = () => {
             />
           </div>
         </div>
+        <label Htmlfor="fonts">Fonts:</label>
+        <select value={fontsOptions} onChange={(e)=>handleFonts(e.target.value)} name="fonts" id="fonts">
+          {fonts.map((item)=>(<option   id={item.id}>{item.name}</option>))}
+          
+        </select>
       </div>
     </>
   );
