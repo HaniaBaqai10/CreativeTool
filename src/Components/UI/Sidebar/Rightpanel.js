@@ -29,7 +29,7 @@ const RightPanel = () => {
         case "bottom": {
           activeObject.set(
             "top",
-            canvasState.width - activeObject.getScaledHeight()
+            canvasState.height - activeObject.getScaledHeight()
           );
           canvasState.renderAll();
           break;

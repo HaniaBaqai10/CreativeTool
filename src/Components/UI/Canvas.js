@@ -38,8 +38,8 @@ const CanvasComponent = () => {
    
     window.fabCanvas = canvas;
     console.log('window.fabCanvas', window.fabCanvas);
-    customizeFabric(canvas);
-    customFabric(canvas);
+    // customizeFabric(canvas);
+    // customFabric(canvas);
     
     canvas.on('selection:created', () => {
      

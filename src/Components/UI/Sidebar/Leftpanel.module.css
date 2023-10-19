@@ -1,9 +1,9 @@
 .leftpanel{
-  width: 30%;
+  width:27%;
   height: 100vh;
   background-color: rgb(54, 53, 53);
   position: absolute;
-  left: 7%;
+  left: 6%;
   padding-top: 20px;
   overflow: auto;
   /* padding-left: 20%; */
