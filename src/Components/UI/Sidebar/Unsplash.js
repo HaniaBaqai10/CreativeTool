@@ -4,11 +4,12 @@ import { useState, useEffect } from "react";
 import { fabric } from 'fabric'
 
 import { useSelector } from "react-redux";
+import {customImageObject} from "../../customFabric/customImage";
 
 const Splash = (props) => {
 
   const canvas = useSelector((state) =>  state.ui.canvas)
- 
+
   const [imageList, setImageList] = useState([]);
   const [page,setPage]=useState(1)
   const isAtBottom=props.isAtBottom
@@ -53,8 +54,14 @@ useEffect(() => {
 
 const addImage = (url) => {
   fabric.Image.fromURL(url, function (image) {
-    canvas.add(image);
-   
+    image.scaleToWidth(50);
+    image.scaleToHeight(50);
+    customImageObject.resize(120, 120);
+    customImageObject.setPosition(0, 0);
+    customImageObject.setCoords();
+    customImageObject.add(image);
+    canvas.add(customImageObject);
+    canvas.requestRenderAll();
   },{crossOrigin: "Anonymous"});
 };
 
