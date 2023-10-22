@@ -78,7 +78,13 @@ const RightPanel = () => {
   const [strokeWidth, setStrokeWidth] = useState("0.1");
   const [angle, setAngle] = useState(1);
   const [fontsOptions, setFontsOptions] = useState('Times New Roman');
-
+  const [uniformStroke, setuniformStroke]=useState(false)
+  const [horizontalMovement, sethorizontalMovement]=useState(true)
+  const [verticalMovement, setVerticalMovement]=useState(true)
+  const [horizontalScaling, setHorizontalScaling]=useState(true)
+  const [verticalScaling, setVerticalScaling]=useState(true)
+  const [rotation, setRotation]=useState(true)
+  const [scalingFlip, setScalingFlip]=useState(true)
   useEffect(() => {
     const activeObject = canvasState.getActiveObject();
     // console.log(canvasState);
@@ -242,12 +248,56 @@ const RightPanel = () => {
     canvasState.renderAll();
     setStrokeWidth(value);
   };
+ const handleUniformStroke =(value)=>{
+   setuniformStroke(!uniformStroke)
+   const activeObject = canvasState.getActiveObject();
+   activeObject.set("strokeUniform", uniformStroke);
+   canvasState.renderAll();
+ }
   const handleStrokeColor = (value) => {
     const activeObject = canvasState.getActiveObject();
     activeObject.set("stroke", value);
     canvasState.renderAll();
     setStrokeColor(value);
   };
+
+ const handleHorizontalMovement=()=>{
+   sethorizontalMovement(!horizontalMovement)
+   const activeObject = canvasState.getActiveObject();
+   activeObject.set("lockMovementX", horizontalMovement);
+   canvasState.renderAll();
+ }
+ const handleVerticalMovement=()=>{
+   setVerticalMovement(!verticalMovement)
+   const activeObject = canvasState.getActiveObject();
+   activeObject.set("lockMovementY", verticalMovement);
+   canvasState.renderAll();
+ }
+ const handleHorizontalScaling=()=>{
+   setHorizontalScaling(!horizontalScaling)
+   const activeObject = canvasState.getActiveObject();
+   activeObject.set("lockScalingX", horizontalScaling);
+   canvasState.renderAll();
+ }
+ const handleVerticalScaling=()=>{
+   setVerticalScaling(!verticalScaling)
+   const activeObject = canvasState.getActiveObject();
+   activeObject.set("lockScalingY", verticalScaling);
+   canvasState.renderAll();
+ }
+ const handleRotationLock=()=>{
+   setRotation(!rotation)
+   const activeObject = canvasState.getActiveObject();
+   activeObject.set("lockRotation", rotation);
+   canvasState.renderAll();
+ }
+ const handleScalingFlip=()=>{
+   setScalingFlip(!scalingFlip)
+   const activeObject = canvasState.getActiveObject();
+   activeObject.set("lockScalingFlip", scalingFlip);
+   canvasState.renderAll();
+ }
+
 
   return (
     <>
@@ -367,7 +417,28 @@ const RightPanel = () => {
               }}
             />
           </div>
+          <div>
+            <label htmlFor="uniformStroke">uniform Stroke</label>
+            <input
+                type="checkbox"
+                name="stroke-uniform"
+                checked={uniformStroke}
+                onChange={e=> {
+                  handleUniformStroke(e.target.value);
+                }}
+                />
+          </div>
+
         </div>
+        <div>
+          <button onClick={handleHorizontalMovement}>Lock Horizontal Movement </button>
+          <button onClick={handleVerticalMovement}>Lock Vertical Movement </button>
+          <button onClick={handleHorizontalScaling}>Lock Horizontal Scaling </button>
+          <button onClick={handleVerticalScaling}>Lock Vertical Scaling </button>
+          <button onClick={handleRotationLock}>Lock Rotation </button>
+          <button onClick={handleScalingFlip}>Lock Scaling Flip </button>
+        </div>
+
         <label className={classes.heading} htmlFor="rotate">
           Rotate
         </label>
