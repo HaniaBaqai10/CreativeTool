@@ -2,6 +2,7 @@ import classes from "./Rightpanel.module.css";
 import { useSelector } from "react-redux";
 import { fabric } from "fabric";
 import { useState, useEffect } from "react";
+import {logDOM} from "@testing-library/react";
 const RightPanel = () => {
   const canvasState = useSelector((state) => state.ui.canvas);
   const [x, setX] = useState(0);
@@ -22,6 +23,9 @@ const RightPanel = () => {
   const [scalingFlip, setScalingFlip]=useState(true)
   const [originX, setOriginX]=useState('')
   const [originY, setOriginY]=useState('')
+  const [objectCaching, setObjectCaching]=useState('')
+  const [noScaleCache, setNoScaleCache]=useState('')
+
   function handleAlignments(value) {
     const activeObject = canvasState.getActiveObject();
     if (activeObject) {
@@ -282,6 +286,18 @@ const RightPanel = () => {
     canvasState.renderAll();
     setStrokeColor(value);
   };
+const handleObjectCaching=(value)=>{
+  const activeObject = canvasState.getActiveObject();
+  activeObject.set("caching", value);
+  canvasState.renderAll();
+  setObjectCaching(value);
+}
+const handleNoScaleCache=(value)=>{
+  const activeObject = canvasState.getActiveObject();
+  activeObject.set("noScaleCache", value);
+  canvasState.renderAll();
+  setNoScaleCache(value);
+}
 
  const handleHorizontalMovement=()=>{
    sethorizontalMovement(!horizontalMovement)
@@ -514,6 +530,42 @@ const RightPanel = () => {
             />
           </div>
         </div>
+        <p>
+          <label className={classes.text}>
+            Cache:
+            <input type="checkbox"
+                   name="object-caching"
+                   bind-value-to="objectCaching"
+                   checked={objectCaching}
+                   onChange={(e)=>handleObjectCaching(e.target.checked)}
+            />
+          </label>
+          <label className={classes.text}>
+            No scaling cache:
+            <input
+                type="checkbox"
+                name="no-scale-cache"
+                bind-value-to="noScaleCache"/>
+          </label>
+          <label>
+            Controls:
+            <input type="checkbox" name="has-controls" className="btn-object-action" bind-value-to="hasControls"/>
+          </label>
+          <label>
+            Transparent corners:
+            <input type="checkbox" name="transparent-corners" className="btn-object-action"
+                   bind-value-to="transparentCorners"/>
+          </label>
+          <label>
+            Borders:
+            <input type="checkbox" name="has-borders" className="btn-object-action" bind-value-to="hasBorders"/>
+          </label>
+          <label>
+            Centered Rotation:
+            <input type="checkbox" name="centered-rotation" className="btn-object-action"
+                   bind-value-to="centeredRotation"/>
+          </label>
+        </p>
         <label Htmlfor="fonts">Fonts:</label>
         <select value={fontsOptions} onChange={(e)=>handleFonts(e.target.value)} name="fonts" id="fonts">
           {fonts.map((item)=>(<option   id={item.id}>{item.name}</option>))}
