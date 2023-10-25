@@ -36,9 +36,9 @@ text-decoration: none;
     margin-left: 35%;
     padding-bottom: 20px;
 }
-.Alignment{
-  padding-bottom: 5px;
-  font-size: 15px;
+.Alignment {
+    padding-bottom: 5px;
+    font-size: 15px;
 }
 .input {
     display: flex;
@@ -64,4 +64,10 @@ text-decoration: none;
     
     width: 60px;
     cursor: pointer;
+  }
+  .text{
+      font-size: 12px;
+  }
+  .textCenter{
+      padding-left:50px;
   }

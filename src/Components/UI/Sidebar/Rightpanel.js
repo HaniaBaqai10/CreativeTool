@@ -4,6 +4,24 @@ import { fabric } from "fabric";
 import { useState, useEffect } from "react";
 const RightPanel = () => {
   const canvasState = useSelector((state) => state.ui.canvas);
+  const [x, setX] = useState(0);
+  const [y, setY] = useState(0);
+  const [width, setWidth] = useState("0");
+  const [height, setHeight] = useState("0");
+  const [color, setColor] = useState("#808080");
+  const [strokeColor, setStrokeColor] = useState("#808080");
+  const [strokeWidth, setStrokeWidth] = useState("0.1");
+  const [angle, setAngle] = useState(1);
+  const [fontsOptions, setFontsOptions] = useState('Times New Roman');
+  const [uniformStroke, setuniformStroke]=useState(false)
+  const [horizontalMovement, sethorizontalMovement]=useState(true)
+  const [verticalMovement, setVerticalMovement]=useState(true)
+  const [horizontalScaling, setHorizontalScaling]=useState(true)
+  const [verticalScaling, setVerticalScaling]=useState(true)
+  const [rotation, setRotation]=useState(true)
+  const [scalingFlip, setScalingFlip]=useState(true)
+  const [originX, setOriginX]=useState('')
+  const [originY, setOriginY]=useState('')
   function handleAlignments(value) {
     const activeObject = canvasState.getActiveObject();
     if (activeObject) {
@@ -52,6 +70,14 @@ const RightPanel = () => {
       }
     }
   }
+  const RadioOptions=[
+    {label: "left", value:"left" },
+    {label: "center", value:"center" },
+    {label: "right", value:"right" },
+    {label: "top", value:"top" },
+    {label: "center", value:"center" },
+    {label: "bottom", value:"bottom" },
+  ]
   const Alignment = [
     { id: "left", name: "Left" },
     { id: "right", name: "Right" },
@@ -69,22 +95,7 @@ const RightPanel = () => {
     {id:"f6",name:"Tangerine"},
     {id:"f7",name:"VT323"},
   ];
-  const [x, setX] = useState(0);
-  const [y, setY] = useState(0);
-  const [width, setWidth] = useState("0");
-  const [height, setHeight] = useState("0");
-  const [color, setColor] = useState("#808080");
-  const [strokeColor, setStrokeColor] = useState("#808080");
-  const [strokeWidth, setStrokeWidth] = useState("0.1");
-  const [angle, setAngle] = useState(1);
-  const [fontsOptions, setFontsOptions] = useState('Times New Roman');
-  const [uniformStroke, setuniformStroke]=useState(false)
-  const [horizontalMovement, sethorizontalMovement]=useState(true)
-  const [verticalMovement, setVerticalMovement]=useState(true)
-  const [horizontalScaling, setHorizontalScaling]=useState(true)
-  const [verticalScaling, setVerticalScaling]=useState(true)
-  const [rotation, setRotation]=useState(true)
-  const [scalingFlip, setScalingFlip]=useState(true)
+
   useEffect(() => {
     const activeObject = canvasState.getActiveObject();
     // console.log(canvasState);
@@ -143,7 +154,18 @@ const RightPanel = () => {
     const activeObject = event.target;
     updateAngle(activeObject);
   };
-
+  const handleOriginX =(value)=>{
+    const activeObject=canvasState.getActiveObject();
+    activeObject.set("originX",value)
+    setOriginX(value)
+    canvasState.renderAll()
+  }
+  const handleOriginY =(value)=>{
+    const activeObject=canvasState.getActiveObject();
+    activeObject.set("originY",value)
+    setOriginY(value)
+    canvasState.renderAll()
+  }
   const handleSelectedObject = (event) => {
    
     const activeObject = event.target;
@@ -438,7 +460,44 @@ const RightPanel = () => {
           <button onClick={handleRotationLock}>Lock Rotation </button>
           <button onClick={handleScalingFlip}>Lock Scaling Flip </button>
         </div>
+        <span style={{marginRight: "10px"}} className={classes.heading }>Origin X </span>
 
+        <div  className={classes.textCenter}>
+          {
+            RadioOptions.slice(0,3).map((options)=>(
+              <label className={classes.text} key={options.value}>
+                {options.value}
+                <input type="radio"
+
+                       name="origin-x"
+                       value={originX}
+                       bind-value-to="originX"
+                       onChange={()=>{handleOriginX(options.value)}}
+                       checked={originX === options.value}
+                />
+              </label>
+            ))
+          }
+        </div>
+        <span style={{marginRight: "10px"}} className={classes.heading }>Origin Y </span>
+
+        <div  className={classes.textCenter}>
+          {
+            RadioOptions.slice(3,6).map((options)=>(
+              <label className={classes.text} key={options.value}>
+                {options.value}
+                <input type="radio"
+
+                       name="origin-y"
+                       value={originY}
+                       bind-value-to="originY"
+                       onChange={()=>{handleOriginY(options.value)}}
+                       checked={originY === options.value}
+                />
+              </label>
+            ))
+          }
+        </div>
         <label className={classes.heading} htmlFor="rotate">
           Rotate
         </label>
