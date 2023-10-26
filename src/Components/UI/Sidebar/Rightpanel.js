@@ -383,6 +383,50 @@ const handleStackingOrder=(positions)=>{
   }
   canvasState.renderAll();
 }
+const createRandomColors=()=>{
+  const letters= "10123456789ABCDEF";
+  let colors='#'
+  for(let i=0;i<6;i++){
+    colors=colors+letters[(Math.floor(Math.random()*16))]
+  }
+  return  colors
+}
+const handleApplyGradient=()=>{
+  const activeObject = canvasState.getActiveObject();
+  const gradient=new fabric.Gradient({
+    type: 'linear',
+    gradientUnits: 'pixels',
+    coords: { x1: 0, y1: 0, x2: 0, y2: activeObject.height },
+    colorStops:[
+      { offset: 0.0, color: createRandomColors() },
+      { offset: 0.3, color: createRandomColors()},
+      { offset: 0.6, color: createRandomColors() },
+    ]
+  })
+  activeObject.set("fill",gradient)
+  canvasState.renderAll()
+}
+
+const handleShadow=()=>{
+  const activeObject= canvasState.getActiveObject();
+  const shadow={
+    color:"rgba(0,0,0,0.2)",
+    blur:0,
+    offsetX:3,
+    offsetY:3
+  }
+  activeObject.set("shadow",shadow)
+  canvasState.renderAll()
+}
+// const handleAddPattern=()=>{
+//   const activeObject=canvasState.getActiveObject();
+//   canvasState.add("assets/cat.jpg")
+//   var pattern = new fabric.Pattern({
+//     source: 'assets/cat.jpg',
+//     repeat: 'repeat',
+//   });
+//   activeObject.set("fill",pattern)
+// }
   return (
     <>
       <div className={classes.rightPanel}>
@@ -642,6 +686,11 @@ const handleStackingOrder=(positions)=>{
           {fonts.map((item)=>(<option   id={item.id}>{item.name}</option>))}
           
         </select>
+        <div>
+        <button onClick={handleApplyGradient}>Gradientify </button>
+        <button onClick={handleShadow}>Shadowify </button>
+        <button onClick={handleAddPattern}>Patternify </button>
+        </div>
       </div>
     </>
   );
