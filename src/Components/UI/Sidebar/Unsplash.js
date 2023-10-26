@@ -58,6 +58,8 @@ const addImage = (url) => {
     image.scaleToHeight(50);
     customImageObject.resize(120, 120);
     customImageObject.setPosition(0, 0);
+    customImageObject.setOrigin('left', 'top');
+
     customImageObject.setCoords();
     customImageObject.add(image);
     canvas.add(customImageObject);

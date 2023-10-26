@@ -16,6 +16,10 @@ class  customImage extends fabric.Group{
         this.set({left, top });
         this.setCoords();
     }
+    setOrigin(OriginX, OriginY) {
+        this.set({OriginX, OriginY });
+        this.setCoords();
+    }
 }
 export const customImageObject= new customImage([],{
     height:80,

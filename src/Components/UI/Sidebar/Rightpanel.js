@@ -21,10 +21,14 @@ const RightPanel = () => {
   const [verticalScaling, setVerticalScaling]=useState(true)
   const [rotation, setRotation]=useState(true)
   const [scalingFlip, setScalingFlip]=useState(true)
-  const [originX, setOriginX]=useState('')
-  const [originY, setOriginY]=useState('')
-  const [objectCaching, setObjectCaching]=useState('')
-  const [noScaleCache, setNoScaleCache]=useState('')
+  const [originX, setOriginX]=useState('center')
+  const [originY, setOriginY]=useState('center')
+  const [objectCaching, setObjectCaching]=useState(true)
+  const [noScaleCache, setNoScaleCache]=useState(false)
+  const [controlsVisibility, setControlVisibility]=useState(true)
+  const [transparentCorners, setTransparentCorners]=useState(false)
+  const [borders, setBorders]=useState(true)
+  const [centeredRotation, setCenteredRotation]=useState(true)
 
   function handleAlignments(value) {
     const activeObject = canvasState.getActiveObject();
@@ -335,8 +339,50 @@ const handleNoScaleCache=(value)=>{
    activeObject.set("lockScalingFlip", scalingFlip);
    canvasState.renderAll();
  }
-
-
+  const handleCenteredRotation = (value) => {
+    const activeObject = canvasState.getActiveObject();
+    activeObject.set("centeredRotation", value);
+    canvasState.renderAll();
+    setCenteredRotation(value)
+  }
+  const handleBorders = (value) => {
+    const activeObject = canvasState.getActiveObject();
+    activeObject.set("hasBorders", value);
+    canvasState.renderAll();
+    setBorders(value)
+  }
+  const handleTransparentCorners = (value) => {
+    const activeObject = canvasState.getActiveObject();
+    activeObject.set("transparentCorners", value);
+    canvasState.renderAll();
+    setTransparentCorners(value)
+  }
+  const handleControlsVisibility = (value) => {
+    const activeObject = canvasState.getActiveObject();
+    activeObject.hasControls = value;
+    canvasState.renderAll();
+    setControlVisibility(value)
+  }
+const handleStackingOrder=(positions)=>{
+  const activeObject = canvasState.getActiveObject();
+  switch (positions) {
+    case "Send backward":
+      canvasState.sendBackwards(activeObject)
+      break;
+    case "Sent to back":
+      canvasState.sendToBack(activeObject)
+      break;
+    case "Bring forwards":
+      canvasState.bringForward(activeObject)
+      break;
+    case "Bring to front":
+      canvasState.bringToFront(activeObject)
+      break;
+    default :
+      return
+  }
+  canvasState.renderAll();
+}
   return (
     <>
       <div className={classes.rightPanel}>
@@ -531,6 +577,7 @@ const handleNoScaleCache=(value)=>{
           </div>
         </div>
         <p>
+          <div>
           <label className={classes.text}>
             Cache:
             <input type="checkbox"
@@ -545,27 +592,51 @@ const handleNoScaleCache=(value)=>{
             <input
                 type="checkbox"
                 name="no-scale-cache"
+                checked={noScaleCache}
+                onChange={(e)=>handleNoScaleCache(e.target.checked)}
                 bind-value-to="noScaleCache"/>
           </label>
-          <label>
+          </div>
+          <label className={classes.text}>
             Controls:
-            <input type="checkbox" name="has-controls" className="btn-object-action" bind-value-to="hasControls"/>
+            <input type="checkbox"
+                   name="has-controls"
+                   bind-value-to="hasControls"
+                   checked={controlsVisibility}
+                   onChange={(e)=>handleControlsVisibility(e.target.checked)}
+            />
           </label>
-          <label>
+          <label className={classes.text}>
             Transparent corners:
-            <input type="checkbox" name="transparent-corners" className="btn-object-action"
+            <input type="checkbox"
+                   name="transparent-corners"
+                   checked={transparentCorners}
+                   onChange={(e)=>handleTransparentCorners(e.target.checked)}
                    bind-value-to="transparentCorners"/>
           </label>
-          <label>
+          <label className={classes.text}>
             Borders:
-            <input type="checkbox" name="has-borders" className="btn-object-action" bind-value-to="hasBorders"/>
-          </label>
-          <label>
+            <input type="checkbox"
+                   name="has-borders"
+                   checked={borders}
+                   onChange={(e)=>handleBorders(e.target.checked)}
+                   bind-value-to="hasBorders"/>
+          </label >
+          <label className={classes.text}>
             Centered Rotation:
-            <input type="checkbox" name="centered-rotation" className="btn-object-action"
+            <input type="checkbox"
+                   name="centered-rotation"
+                   checked={centeredRotation}
+                   onChange={(e)=>handleCenteredRotation(e.target.checked)}
                    bind-value-to="centeredRotation"/>
           </label>
         </p>
+        <div>
+          {["Send backward","Sent to back","Bring forwards","Bring to front"].map((positions)=>
+              (
+                  < button onClick={()=>handleStackingOrder(positions)}>{positions}</button>))
+          }
+        </div>
         <label Htmlfor="fonts">Fonts:</label>
         <select value={fontsOptions} onChange={(e)=>handleFonts(e.target.value)} name="fonts" id="fonts">
           {fonts.map((item)=>(<option   id={item.id}>{item.name}</option>))}
