@@ -33,7 +33,8 @@ const CanvasComponent = () => {
       border:'black'
       
     });
-    
+
+
     dispatch(uiActions.setCanvas(canvas));
    
     window.fabCanvas = canvas;

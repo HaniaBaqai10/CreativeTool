@@ -104,6 +104,7 @@ const RightPanel = () => {
     {id:"f7",name:"VT323"},
   ];
 
+
   useEffect(() => {
     const activeObject = canvasState.getActiveObject();
     // console.log(canvasState);
@@ -418,14 +419,18 @@ const handleShadow=()=>{
   activeObject.set("shadow",shadow)
   canvasState.renderAll()
 }
-// const handleAddPattern=()=>{
+
+
+//   const handleAddPattern=()=>{
 //   const activeObject=canvasState.getActiveObject();
-//   canvasState.add("assets/cat.jpg")
-//   var pattern = new fabric.Pattern({
-//     source: 'assets/cat.jpg',
-//     repeat: 'repeat',
+//   const source=require('../../../assets/cat.jpg').default
+//     fabric.Image.fromURL(source, function(patternImg) {
+//       patternImg.set({repeat: 'repeat'})
+//       // patternImg.scaleToHeight(1000)
+//       // patternImg.scaleToWidth(1000)
+//       activeObject.set("fill",patternImg)
 //   });
-//   activeObject.set("fill",pattern)
+//     canvasState.renderAll()
 // }
   return (
     <>
@@ -689,7 +694,7 @@ const handleShadow=()=>{
         <div>
         <button onClick={handleApplyGradient}>Gradientify </button>
         <button onClick={handleShadow}>Shadowify </button>
-        <button onClick={handleAddPattern}>Patternify </button>
+        {/*<button onClick={handleAddPattern}>Patternify </button>*/}
         </div>
       </div>
     </>
