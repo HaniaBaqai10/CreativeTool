@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { fabric } from 'fabric'
 
 import { useSelector } from "react-redux";
-import {customImageObject} from "../../customFabric/customImage";
+import customFabricImage from "../../customFabric/customImage";
 
 const Splash = (props) => {
 
@@ -53,15 +53,26 @@ useEffect(() => {
 
 
 const addImage = (url) => {
+  debugger
   fabric.Image.fromURL(url, function (image) {
-    image.scaleToWidth(50);
-    image.scaleToHeight(50);
-    customImageObject.resize(120, 120);
-    customImageObject.setPosition(0, 0);
-    customImageObject.setCoords();
-    customImageObject.add(image);
-    canvas.add(customImageObject);
-    canvas.renderAll();
+    image.left = 50;
+    image.top = 50;
+    image.scaleToWidth(200);
+    image.url=url
+    image.on('load', function () {
+      console.log("Image loaded.");
+      const customImg = new customFabricImage([image], {
+        image: image,
+        left: 100,
+        top: 100,
+        height: 100,
+        width: 100,
+        // originX: 'top',
+        // originY: 'left'
+      });
+      canvas.add(customImg);
+      canvas.renderAll();
+    });
   },{crossOrigin: "Anonymous"});
 };
 
