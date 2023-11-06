@@ -52,29 +52,23 @@ useEffect(() => {
 }, [page,userinput]);
 
 
-const addImage = (url) => {
-  debugger
-  fabric.Image.fromURL(url, function (image) {
-    image.left = 50;
-    image.top = 50;
-    image.scaleToWidth(200);
-    image.url=url
-    image.on('load', function () {
-      console.log("Image loaded.");
-      const customImg = new customFabricImage([image], {
-        image: image,
-        left: 100,
-        top: 100,
-        height: 100,
-        width: 100,
-        // originX: 'top',
-        // originY: 'left'
+  const addImage = (url) => {
+    fabric.Image.fromURL(url, function (img) {
+      img.left = 0;
+      img.height=100;
+      img.width=100;
+      img.top = 0;
+      img.crossOrigin = "anonymous";
+
+      const customImg = new customFabricImage({
+        image:img,
+        left: 0,
+        top: 0,
       });
       canvas.add(customImg);
       canvas.renderAll();
     });
-  },{crossOrigin: "Anonymous"});
-};
+  };
 
 useEffect(() => {
   try{

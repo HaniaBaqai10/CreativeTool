@@ -10,12 +10,14 @@ class customFabricImage extends fabric.Group {
             this.initialize(options.image, options);
         }
     }
+
+
     _render(ctx) {
         super._render(ctx);
         if (this.size() > 0) {
             const img = this.item(0);
             ctx.drawImage(this.image._element, -img.width / 2, -img.height / 2, img.width, img.height);
-        }
+            }
     }
 }
 
