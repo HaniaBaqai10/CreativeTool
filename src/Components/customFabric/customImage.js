@@ -2,16 +2,26 @@ import { fabric } from 'fabric'
 
 
 class customFabricImage extends fabric.Group {
-    constructor(image,options) {
-        super(options);
+    constructor(objects, options) {
+        super(objects, options);
         this.type = 'customFabricImage';
-
-        if (options && options.image) {
-            this.initialize(options.image, options);
-        }
+        this.setupImage();
     }
 
+    setupImage() {
+        this._objects.forEach((obj) => {
 
+            obj.set({
+                left: obj.left,
+                top: obj.top,
+                height:obj.height,
+                width:obj.width,
+                scaleX:obj.scaleX,
+                scaleY:obj.scaleY
+            });
+        });
+        this.setCoords();
+    }
     _render(ctx) {
         super._render(ctx);
         if (this.size() > 0) {

@@ -54,17 +54,22 @@ useEffect(() => {
 
   const addImage = (url) => {
     fabric.Image.fromURL(url, function (img) {
-      img.left = 0;
-      img.height=100;
-      img.width=100;
-      img.top = 0;
       img.crossOrigin = "anonymous";
+      const newWidth = 200;
+      const newHeight = 200;
+      const scaleX = newWidth / img.width;
+      const scaleY = newHeight / img.height;
+      const minScale = Math.min(scaleX, scaleY);
 
-      const customImg = new customFabricImage({
-        image:img,
-        left: 0,
-        top: 0,
-      });
+      img.set('left', 0);
+      img.set('top', 0);
+      img.set('width', img.width);
+      img.set('height', img.height);
+      img.set('scaleX', minScale);
+      img.set('scaleY', minScale);
+      const customImg = new customFabricImage([img]);
+
+      customImg.setupImage(img);
       canvas.add(customImg);
       canvas.renderAll();
     });
