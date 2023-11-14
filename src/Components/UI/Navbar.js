@@ -1,7 +1,9 @@
 import classes from "./Navbar.module.css";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUpload } from "@fortawesome/free-solid-svg-icons";
+import { faUpload,faShare } from "@fortawesome/free-solid-svg-icons";
+import { FacebookShareButton, FacebookIcon } from 'react-share';
+
 const Navbar = () => {
   const canvasState = useSelector((state) => state.ui.canvas);
   const handleExport=(type)=>{
@@ -42,20 +44,37 @@ const Navbar = () => {
           Home
         </a>
       </div>
+      <div style={{display:"flex"}}>
+
       <div className={classes.dropdown}>
-     
-      <button className={classes.button} >
-        <FontAwesomeIcon icon={faUpload} height="1.3em" />
-        <span style={{ paddingLeft: "10px" }}>Export</span>
-       
-      </button>
+          <div>
+              <ShareOnFacebook url="ngrok.com/early-access" title="Your Title"
+                               image="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Bachelor%27s_button%2C_Basket_flower%2C_Boutonniere_flower%2C_Cornflower_-_3.jpg/1200px-Bachelor%27s_button%2C_Basket_flower%2C_Boutonniere_flower%2C_Cornflower_-_3.jpg" />
+          </div>
       <div className={classes['dropdown-content']} >
 {        <button onClick={()=>{handleExport('png')}} >PNG</button>
 
 }      <button onClick={()=>{handleExport('svg')}} >SVG</button>
       </div>
-    </div>
+      </div>
+      <button className={classes.button} >
+        <FontAwesomeIcon icon={faShare} height="1.3em" />
+        <span style={{ paddingLeft: "10px" }}>Share</span>
+
+      </button>
+      </div>
+
     </div>
   );
 };
 export default Navbar;
+
+
+export const ShareOnFacebook = ({ url, title, image }) => {
+  return (
+      <FacebookShareButton url={url} quote={title} hashtag="#YourHashtag">
+        <FacebookIcon size={32} round />
+      </FacebookShareButton>
+  );
+};
+

@@ -1,34 +1,52 @@
-import { fabric } from 'fabric'
+import { fabric } from 'fabric';
 
-
-class customFabricImage extends fabric.Group {
+class CustomFabricImage extends fabric.Group {
     constructor(objects, options) {
         super(objects, options);
         this.type = 'customFabricImage';
         this.setupImage();
+        this.setupControls();
     }
 
     setupImage() {
         this._objects.forEach((obj) => {
-
             obj.set({
-                left: obj.left,
-                top: obj.top,
-                height:obj.height,
-                width:obj.width,
-                scaleX:obj.scaleX,
-                scaleY:obj.scaleY
+                left: obj.left || 0,
+                top: obj.top || 0,
+                height: obj.height || 0,
+                width: obj.width || 0,
+                scaleX: obj.scaleX || 1,
+                scaleY: obj.scaleY || 1,
             });
         });
         this.setCoords();
     }
-    _render(ctx) {
-        super._render(ctx);
-        if (this.size() > 0) {
-            const img = this.item(0);
-            ctx.drawImage(this.image._element, -img.width / 2, -img.height / 2, img.width, img.height);
-            }
+
+    setupControls() {
+        const objectControls = fabric.Object.prototype.controls;
+        this.controls = { ...objectControls };
+        const imageControls = this.controls;
+        imageControls.mr = new fabric.Control({
+            x: 0.5,
+            y: 0,
+            borderColor: 'red',
+            cornerColor: 'green',
+            cornerSize: 12,
+            transparentCorners: false,
+            hasRotatingPoint: false,
+        });
+        console.log(imageControls.mr);
     }
+
+    // render(ctx) {
+    //     super.render(ctx);
+    //     if (this.size() > 0) {
+    //         const img = this.item(0);
+    //         if (img) {
+    //             ctx.drawImage(img._element, -img.width / 2, -img.height / 2, img.width, img.height);
+    //         }
+    //     }
+    // }
 }
 
-export default customFabricImage;
+export default CustomFabricImage;

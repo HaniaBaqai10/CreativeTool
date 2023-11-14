@@ -68,8 +68,6 @@ useEffect(() => {
       img.set('scaleX', minScale);
       img.set('scaleY', minScale);
       const customImg = new customFabricImage([img]);
-
-      customImg.setupImage(img);
       canvas.add(customImg);
       canvas.renderAll();
     });
