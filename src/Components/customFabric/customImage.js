@@ -1,11 +1,15 @@
 import { fabric } from 'fabric';
 
 class CustomFabricImage extends fabric.Group {
-    constructor(objects, options) {
-        super(objects, options);
+    constructor(canvas,objects) {
+        console.log(canvas)
+        super(objects);
+        this.canvas=canvas
         this.type = 'customFabricImage';
         this.setupImage();
         this.setupControls();
+        this.handleScaling = this.handleScaling.bind(this);
+
     }
 
     setupImage() {
@@ -22,19 +26,45 @@ class CustomFabricImage extends fabric.Group {
         this.setCoords();
     }
 
+    handleScaling(e, target) {
+        const pointer = this.canvas.getPointer(e);
+        const scaleX = (pointer.x - target.left) / target.width;
+        const scaleY = (pointer.y - target.top) / target.height;
+
+        this._objects.forEach((obj) => {
+            const newLeft = obj.left * scaleX;
+            const newTop = obj.top * scaleY;
+            const newWidth = obj.width * scaleX;
+            const newHeight = obj.height * scaleY;
+
+            obj.set({
+                left: newLeft,
+                top: newTop,
+                width: newWidth,
+                height: newHeight,
+            });
+        });
+
+        this.setCoords();
+        this.canvas.requestRenderAll();
+    }
     setupControls() {
         const objectControls = fabric.Object.prototype.controls;
         this.controls = { ...objectControls };
         const imageControls = this.controls;
+        const scaleStyleHandler = fabric.controlsUtils.scaleCursorStyleHandler;
+
         imageControls.mr = new fabric.Control({
             x: 0.5,
             y: 0,
             borderColor: 'red',
             cornerColor: 'green',
-            cornerSize: 12,
+            cornerSize: 102,
+            cursorStyleHandler: scaleStyleHandler,
             transparentCorners: false,
-            hasRotatingPoint: false,
-        });
+            actionHandler: (e, target) => this.handleScaling(e, target),
+
+    });
         console.log(imageControls.mr);
     }
 
