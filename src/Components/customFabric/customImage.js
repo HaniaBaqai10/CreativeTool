@@ -8,6 +8,7 @@ class CustomFabricImage extends fabric.Group {
         this.type = 'customFabricImage';
         this.setupImage();
         this.setupControls();
+        this.addBorder();
         this.handleScaling = this.handleScaling.bind(this);
 
     }
@@ -25,6 +26,7 @@ class CustomFabricImage extends fabric.Group {
         });
         this.setCoords();
     }
+
 
     handleScaling(e, target) {
         const pointer = this.canvas.getPointer(e);
@@ -44,9 +46,21 @@ class CustomFabricImage extends fabric.Group {
                 height: newHeight,
             });
         });
-
         this.setCoords();
         this.canvas.requestRenderAll();
+    }
+
+    addBorder() {
+        const newCtx = this.canvas.contextContainer;
+        const img = newCtx.getImageData(0, 0, newCtx.canvas.width - 1, newCtx.canvas.height - 1);
+        const opaqueAlpha = 255;
+
+        for (let i = img.data.length; i > 0; i -= 4) {
+            if (img.data[i + 3] > 0) {
+                img.data[i + 3] = opaqueAlpha;
+            }
+        }
+        newCtx.putImageData(img, 0, 0);
     }
     setupControls() {
         const objectControls = fabric.Object.prototype.controls;
@@ -67,16 +81,6 @@ class CustomFabricImage extends fabric.Group {
     });
         console.log(imageControls.mr);
     }
-
-    // render(ctx) {
-    //     super.render(ctx);
-    //     if (this.size() > 0) {
-    //         const img = this.item(0);
-    //         if (img) {
-    //             ctx.drawImage(img._element, -img.width / 2, -img.height / 2, img.width, img.height);
-    //         }
-    //     }
-    // }
 }
 
 export default CustomFabricImage;
